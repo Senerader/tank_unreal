@@ -2,5 +2,5 @@
 The repository for the tank game in UE4 with simple AI, primitive terrain and advanced control.
 Public repository, firstly introduced to GitHub.
 ---
-##Commits list:
+## Commits list:
 * Introduction to GitHub
