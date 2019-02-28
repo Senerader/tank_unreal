@@ -19,6 +19,13 @@ public:
 
 	//starts at initialziation
 	virtual void BeginPlay() override;
+
+	//ticks every frame
+	virtual void Tick(float DeltaTime) override;
+
+	//moving the barrel so shot would hit where crosshair intersects the world
+	void AimAtCrosshair();
+
 private:
 	ATank *ControlledTank = NULL;
 };
