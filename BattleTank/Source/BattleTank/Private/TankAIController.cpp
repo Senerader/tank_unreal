@@ -27,6 +27,13 @@ void ATankAIController::BeginPlay()
 
 }
 
+void ATankAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	//outputs the position of player tank
+	AimAtPlayer();
+}
+
 ATank* ATankAIController::GetAITank() const
 {
 	return Cast<ATank>(GetPawn());
@@ -49,4 +56,15 @@ ATank* ATankAIController::GetPlayerTank() const
 		UE_LOG(LogTemp, Error, TEXT("NO WORLD FOUND"));
 	}
 	return PlayerTank;
+}
+
+void ATankAIController::AimAtPlayer()
+{
+	if (GetPlayerTank() == NULL) { return; }
+
+	//finding player world coordinates
+	PlayerCoordinates = PlayerTank->GetActorLocation();
+	//calling parent method for printing coordinates
+	AITank->AimAt(PlayerCoordinates);
+	return;
 }

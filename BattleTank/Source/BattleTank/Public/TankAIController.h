@@ -17,10 +17,19 @@ class BATTLETANK_API ATankAIController : public AAIController
 public:
 	//starts at initialziation
 	virtual void BeginPlay() override;
+
+	//ticks every frame
+	virtual void Tick(float DeltaTime) override;
+
+protected:
+
+	void AimAtPlayer();
+
 private:
 	ATank *GetAITank() const;
 	ATank *GetPlayerTank() const;
 	
 	ATank *AITank = NULL;
 	ATank *PlayerTank = NULL;
+	FVector PlayerCoordinates;
 };

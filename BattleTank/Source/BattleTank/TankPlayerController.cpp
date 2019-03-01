@@ -22,7 +22,6 @@ void ATankPlayerController::BeginPlay()
 void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//TODO make aiming at crosshair defined in UI
 	AimAtCrosshair();
 }
 
@@ -33,12 +32,11 @@ ATank* ATankPlayerController::GetControlledTank() const
 
 void ATankPlayerController::AimAtCrosshair()
 {
+	if (!GetControlledTank()) { return; }
 
 	FVector AimHitLocation;
 	if (GetSightRayHitLocation(AimHitLocation)) {
-		UE_LOG(LogTemp, Warning, TEXT("%s Hit Location"),
-			*(AimHitLocation.ToString())
-		);
+		GetControlledTank()->AimAt(AimHitLocation);
 	}
 	//TODO get world crosshair as ray-trace, if it hits landscape - tell the controlled tank to aim at crosshair
 	return;
@@ -47,7 +45,6 @@ void ATankPlayerController::AimAtCrosshair()
 //checks if the player UI viewpoint has hit the landscape
 bool ATankPlayerController::GetSightRayHitLocation(FVector& AimHitLocation)
 {
-	if (!GetControlledTank()) { return false;}
 	//find crosshair position in pix coordinates
 	int32 ViewPortSizeX, ViewPortSizeY;
 	GetViewportSize(ViewPortSizeX, ViewPortSizeY);
