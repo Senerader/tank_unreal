@@ -25,7 +25,7 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void AimAt(FVector WorldHitLocation);
+	void AimAt(FVector WorldHitLocation, float LaunchSpeed);
 
 	void SetBarrelReference(UStaticMeshComponent* SetBarrel);
 
