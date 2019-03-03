@@ -15,7 +15,8 @@ class BATTLETANK_API UTankBarrel : public UStaticMeshComponent
 	GENERATED_BODY()
 
 public:
-	void ElevateBarrel(float DegreesPerSecond);
+	//-1 is max downward speed and +1 max upward speed.
+	void ElevateBarrel(float RelativeSpeed);
 
 private:
 	//setting up default sensible values
@@ -27,4 +28,6 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Setup)
 	float MinElevationAngle = 0.f; //required to be set in blueprint!
+
+	float checker = 1.f;
 };

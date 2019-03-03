@@ -11,7 +11,7 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = true; //TODO should it tick?
 
 	// ...
 }
@@ -30,14 +30,26 @@ void UTankAimingComponent::AimAt(FVector WorldHitLocation, float LaunchSpeed)
 		ProjectileStartLocation,
 		WorldHitLocation,
 		LaunchSpeed,
-		ESuggestProjVelocityTraceOption::DoNotTrace
+		false,
+		0,
+		0,
+		ESuggestProjVelocityTraceOption::DoNotTrace,
+		FCollisionResponseParams::DefaultResponseParam,
+		TArray<AActor *>(),
+		true
 	);
 	if(bHaveAimSolution)
 	{
 		auto AimDirection = LaunchSpeedVelocity.GetSafeNormal();
+		auto Time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f: Aim Solution Found for %s"), Time, *GetOwner()->GetName());
 		MoveBarrelTowards(AimDirection);
 	}
-	//do nothing if no solution was found
+	else
+	{
+		auto Time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f: No Aim Solution Found"), Time);
+	}
 	return;
 }
 

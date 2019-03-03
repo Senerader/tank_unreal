@@ -2,6 +2,8 @@
 
 #include "TankPlayerController.h"
 #include "GameFramework/Actor.h"
+#include "TankAimingComponent.h"
+#include "Public/Tank.h"
 #include "Engine/Classes/Camera/PlayerCameraManager.h"
 #include "Engine/World.h"
 
@@ -58,9 +60,9 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& AimHitLocation)
 	{
 		//ray-trace through look direction
 		//checking if our camera hits something
-		GetLookVectorHitLocation(LookDirection, AimHitLocation);
+		return GetLookVectorHitLocation(LookDirection, AimHitLocation);
 	}
-	return true;
+	return false;
 }
 
 bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& DeprojectDirection) const
