@@ -3,6 +3,7 @@
 #include "TankAimingComponent.h"
 #include "GameFramework/Actor.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "Classes/Components/StaticMeshComponent.h"
 
@@ -19,7 +20,7 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::AimAt(FVector WorldHitLocation, float LaunchSpeed)
 {
-	if (!Barrel) { return; }
+	if (!Barrel || !Turret) { return; }
 	FVector LaunchSpeedVelocity = FVector(0.f);
 	FVector ProjectileStartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 
@@ -55,7 +56,20 @@ void UTankAimingComponent::AimAt(FVector WorldHitLocation, float LaunchSpeed)
 
 void UTankAimingComponent::SetBarrelReference(UTankBarrel* SetBarrel)
 {
+	if (SetBarrel == nullptr)
+	{
+		return;
+	}
 	Barrel = SetBarrel;
+}
+
+void UTankAimingComponent::SetTurretReference(UTankTurret* SetTurret)
+{
+	if (SetTurret == nullptr)
+	{
+		return;
+	}
+	Turret = SetTurret;
 }
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
@@ -69,5 +83,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	
 	auto DeltaRotation = AimAsRotator - BarrelRotator;
 	
+	//changing barrel elevation and turret yaw frame independently through their respective classes
 	Barrel->ElevateBarrel(DeltaRotation.Pitch);
+	Turret->YawTurret(DeltaRotation.Yaw);
 }
