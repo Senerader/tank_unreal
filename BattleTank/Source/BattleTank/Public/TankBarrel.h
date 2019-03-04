@@ -29,4 +29,5 @@ private:
 	UPROPERTY(EditAnywhere, Category = Setup)
 	float MinElevationAngle = 0.f; //required to be set in blueprint!
 
+	bool bHasBug = 1;
 };

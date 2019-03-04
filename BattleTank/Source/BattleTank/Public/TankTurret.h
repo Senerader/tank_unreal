@@ -23,4 +23,5 @@ private:
 	UPROPERTY(EditAnywhere, Category = Setup)
 	float MaxDegreesPerSecond = 20.f;
 
+	bool bHasBug = 1;
 };
