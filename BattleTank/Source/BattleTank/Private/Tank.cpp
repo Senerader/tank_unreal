@@ -45,3 +45,8 @@ void ATank::SetTurretReference(UTankTurret* TurretToSet)
 	return;
 }
 
+void ATank::Fire() 
+{
+	UE_LOG(LogTemp, Warning, TEXT("%s firing"), *GetName());
+	return;
+}
