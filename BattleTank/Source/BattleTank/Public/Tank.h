@@ -9,6 +9,7 @@
 #include "Tank.generated.h"
 
 //Forward declarations
+class AProjectile;
 class UTankTurret;
 class UTankBarrel;
 class UTankAimingComponent;
@@ -43,6 +44,16 @@ private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(EditAnywhere, Category = Fiting)
-	float LaunchSpeed = 100000; //sensible starting value
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float ReloadTimeSec = 3.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float LaunchSpeed = 40000; //sensible starting value
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<AProjectile> ProjectileBP;
+
+	UTankBarrel *LocaLBarrel = nullptr;
+
+	float LastFireTime = 0;
 };
