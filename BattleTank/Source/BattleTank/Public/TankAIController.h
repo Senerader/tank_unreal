@@ -22,12 +22,11 @@ public:
 	//ticks every frame
 	virtual void Tick(float DeltaTime) override;
 
-protected:
-
-	void AimAtPlayer();
-
 private:
 	ATank *AITank = NULL;
 	ATank *PlayerTank = NULL;
 	FVector PlayerCoordinates;
+
+	//how close can AI tank get to the player
+	float AcceptanceRadius = 3000.f;
 };
