@@ -15,8 +15,6 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 public:
-	ATank *GetControlledTank() const;
-
 	//starts at initialziation
 	virtual void BeginPlay() override;
 
@@ -26,6 +24,9 @@ public:
 	//moving the barrel so shot would hit where crosshair intersects the world
 	void AimAtCrosshair();
 protected:
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	ATank *GetControlledTank() const;
+
 	bool GetSightRayHitLocation(FVector& AimHitLocation);
 
 	bool GetLookDirection(FVector2D ScreenLocation, FVector& DeprojectDirection) const;
