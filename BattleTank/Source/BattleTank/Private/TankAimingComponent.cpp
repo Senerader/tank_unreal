@@ -19,7 +19,7 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::AimAt(FVector WorldHitLocation, float LaunchSpeed)
 {
-	if (!Barrel || !Turret) { return; }
+	if (!ensure(Barrel && Turret)) { return; }
 	FVector LaunchSpeedVelocity = FVector(0.f);
 	FVector ProjectileStartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 
@@ -46,27 +46,9 @@ void UTankAimingComponent::AimAt(FVector WorldHitLocation, float LaunchSpeed)
 	return;
 }
 
-void UTankAimingComponent::SetBarrelReference(UTankBarrel* SetBarrel)
-{
-	if (SetBarrel == nullptr)
-	{
-		return;
-	}
-	Barrel = SetBarrel;
-}
-
-void UTankAimingComponent::SetTurretReference(UTankTurret* SetTurret)
-{
-	if (SetTurret == nullptr)
-	{
-		return;
-	}
-	Turret = SetTurret;
-}
-
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
-
+	if (!ensure(Barrel && Turret)) { return; }
 	//receives vector coordinates
 	//changes the initial position according to AimDirection
 	//Converting Aimdirection to Rotation
@@ -78,4 +60,11 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	//changing barrel elevation and turret yaw frame independently through their respective classes
 	Barrel->ElevateBarrel(DeltaRotation.Pitch);
 	Turret->YawTurret(DeltaRotation.Yaw);
+}
+
+void UTankAimingComponent::Initialize(UTankTurret* TurretToSet, UTankBarrel* BarrelToSet)
+{
+	Turret = TurretToSet;
+	Barrel = BarrelToSet;
+	return;
 }

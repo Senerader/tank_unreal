@@ -13,11 +13,14 @@ void ATankPlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	ControlledTank = GetControlledTank();
-	if (ControlledTank != NULL){
-		UE_LOG(LogTemp, Warning, TEXT("Controlled tank: %s found"), *(ControlledTank->GetName()));
+	auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
+	if (AimingComponent)
+	{
+		FoundAimingComponent(AimingComponent);
 	}
-	else {
-		UE_LOG(LogTemp, Error, TEXT("NO CONTROLLED TANK FOUND"));
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No Aiming Component found for %s"), *ControlledTank->GetName())
 	}
 }
 
@@ -34,7 +37,7 @@ ATank* ATankPlayerController::GetControlledTank() const
 
 void ATankPlayerController::AimAtCrosshair()
 {
-	if (!GetControlledTank()) { return; }
+	if (!ensure(GetControlledTank())) { return; }
 
 	FVector AimHitLocation;
 	if (GetSightRayHitLocation(AimHitLocation)) {
