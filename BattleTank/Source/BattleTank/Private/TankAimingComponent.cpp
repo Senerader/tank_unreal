@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
+#include "Projectile.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "Classes/Components/StaticMeshComponent.h"
 
@@ -17,7 +18,7 @@ UTankAimingComponent::UTankAimingComponent()
 }
 
 
-void UTankAimingComponent::AimAt(FVector WorldHitLocation, float LaunchSpeed)
+void UTankAimingComponent::AimAt(FVector WorldHitLocation)
 {
 	if (!ensure(Barrel && Turret)) { return; }
 	FVector LaunchSpeedVelocity = FVector(0.f);
@@ -66,5 +67,24 @@ void UTankAimingComponent::Initialize(UTankTurret* TurretToSet, UTankBarrel* Bar
 {
 	Turret = TurretToSet;
 	Barrel = BarrelToSet;
+	return;
+}
+
+void UTankAimingComponent::Fire()
+{
+	if (!ensure(Barrel && ProjectileBP)) { return; }
+
+	bool isReloaded = (GetWorld()->GetTimeSeconds() - LastFireTime) >= ReloadTimeSec;
+	if (isReloaded)
+	{
+		//spawn actor at firing socket.
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+			ProjectileBP,
+			Barrel->GetSocketTransform(FName("Projectile"))
+			);
+
+		Projectile->LaunchProjectile(LaunchSpeed);
+		LastFireTime = GetWorld()->GetTimeSeconds();
+	}
 	return;
 }

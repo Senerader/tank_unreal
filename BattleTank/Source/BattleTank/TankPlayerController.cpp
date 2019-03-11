@@ -12,11 +12,11 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ControlledTank = GetControlledTank();
-	auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
-	if (AimingComponent)
+	ControlledTank = GetPawn();
+	auto TankAimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
+	if (ensure(TankAimingComponent))
 	{
-		FoundAimingComponent(AimingComponent);
+		FoundAimingComponent(TankAimingComponent);
 	}
 	else
 	{
@@ -30,20 +30,16 @@ void ATankPlayerController::Tick(float DeltaTime)
 	AimAtCrosshair();
 }
 
-ATank* ATankPlayerController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-}
-
 void ATankPlayerController::AimAtCrosshair()
 {
-	if (!ensure(GetControlledTank())) { return; }
+	ControlledTank = GetPawn();
+	auto TankAimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(TankAimingComponent)) { return; }
 
 	FVector AimHitLocation;
 	if (GetSightRayHitLocation(AimHitLocation)) {
-		GetControlledTank()->AimAt(AimHitLocation);
+		TankAimingComponent->AimAt(AimHitLocation);
 	}
-	//TODO get world crosshair as ray-trace, if it hits landscape - tell the controlled tank to aim at crosshair
 	return;
 }
 

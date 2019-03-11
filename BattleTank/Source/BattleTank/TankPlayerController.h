@@ -6,7 +6,6 @@
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
 
-class ATank;
 class UTankAimingComponent;
 /**
  * Helps player to aim
@@ -25,9 +24,6 @@ public:
 	//moving the barrel so shot would hit where crosshair intersects the world
 	void AimAtCrosshair();
 protected:
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	ATank *GetControlledTank() const;
-
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundAimingComponent(UTankAimingComponent* AimCompRef);
 
@@ -38,7 +34,9 @@ protected:
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector& AimHitLocation) const;
 
 private:
-	ATank *ControlledTank = NULL;
+	APawn *ControlledTank = NULL;
+
+	UTankAimingComponent* TankAimingComponent = nullptr;
 
 	UPROPERTY(EditAnywhere)
 	float CrosshairLocationX = 0.5;

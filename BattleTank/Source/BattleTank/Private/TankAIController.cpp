@@ -2,13 +2,16 @@
 
 #include "TankAIController.h"
 #include "Engine/World.h"
-#include "Public/Tank.h"
+#include "TankAimingComponent.h"
 #include "Engine/Classes/GameFramework/PlayerController.h"
 #include "GameFramework/Actor.h"
 
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AITank = GetPawn();
+	TankAimingComponent = AITank->FindComponentByClass<UTankAimingComponent>();
 }
 
 void ATankAIController::Tick(float DeltaTime)
@@ -16,15 +19,15 @@ void ATankAIController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	//outputs the position of player tank
 
-	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	auto AITank = Cast<ATank>(GetPawn());
-	if (PlayerTank)
+	PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
+	TankAimingComponent = AITank->FindComponentByClass<UTankAimingComponent>();
+	if (ensure(PlayerTank && TankAimingComponent))
 	{
 		//move towards player
 		MoveToActor(PlayerTank, AcceptanceRadius); //TODO check radius in cm
 
-		AITank->AimAt(PlayerTank->GetActorLocation());
-		AITank->Fire();
+		TankAimingComponent->AimAt(PlayerTank->GetActorLocation());
+		TankAimingComponent->Fire();
 
 	}
 }
