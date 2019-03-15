@@ -38,6 +38,8 @@ public:
 
 	void AimAt(FVector WorldHitLocation);
 	
+	EFiringState GetFiringState() const;
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Status")
 	EFiringState FiringState = EFiringState::Reloading;
