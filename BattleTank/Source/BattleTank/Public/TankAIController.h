@@ -22,13 +22,15 @@ public:
 	//ticks every frame
 	virtual void Tick(float DeltaTime) override;
 
+protected:
+	//how close can AI tank get to the player
+	UPROPERTY(EditAnywhere)
+	float AcceptanceRadius = 8000.f;
+
 private:
 	APawn *AITank = NULL;
 	APawn *PlayerTank = NULL;
 	FVector PlayerCoordinates;
 
 	UTankAimingComponent* TankAimingComponent = nullptr;
-
-	//how close can AI tank get to the player
-	float AcceptanceRadius = 3000.f;
 };
