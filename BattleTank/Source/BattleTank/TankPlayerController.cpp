@@ -12,6 +12,7 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (!GetPawn()) { return; } //e.g not possesing
 	ControlledTank = GetPawn();
 	auto TankAimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
 	if (ensure(TankAimingComponent))
