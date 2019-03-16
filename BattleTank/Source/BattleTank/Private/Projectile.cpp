@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Projectile.h"
+#include "Runtime/Engine/Classes/Particles/ParticleSystemComponent.h"
+#include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 // Sets default values
 AProjectile::AProjectile()
@@ -10,6 +12,16 @@ AProjectile::AProjectile()
 
 	//Not required ot add pointer protection in constructor
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Movement Component"));
+
+	//setting up projectile collision mesh and default values
+	ProjectileCollisionMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Collision Mesh"));
+	SetRootComponent(ProjectileCollisionMesh);
+	ProjectileCollisionMesh->SetNotifyRigidBodyCollision(true);
+	ProjectileCollisionMesh->SetVisibility(true);
+	
+	//setting up projectile launch blast and default values
+	ProjectileLaunchBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("Launch Blast"));
+	ProjectileLaunchBlast->AttachTo(RootComponent);
 
 	ProjectileMovementComponent->bAutoActivate = false;
 }
