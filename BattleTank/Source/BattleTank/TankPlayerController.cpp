@@ -27,6 +27,7 @@ void ATankPlayerController::BeginPlay()
 
 void ATankPlayerController::Tick(float DeltaTime)
 {
+	if (!GetPawn()) { return; }
 	Super::Tick(DeltaTime);
 	AimAtCrosshair();
 }
@@ -90,4 +91,24 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 	//unsuccessful hit
 	AimHitLocation = FVector(0);
 	return false;
+}
+
+void ATankPlayerController::SetPawn(APawn * InPawn)
+{
+	Super::SetPawn(InPawn);
+
+	if (InPawn)
+	{
+		auto PossesedTank = Cast<ATank>(InPawn);
+		if (!ensure(PossesedTank)) { return; }
+
+		//subscrive our local  method to Tank's death method
+		PossesedTank->OnTankDeath.AddUniqueDynamic(this, &ATankPlayerController::OnPossesedDeath);
+	}
+}
+
+void ATankPlayerController::OnPossesedDeath()
+{
+	if (!GetPawn()) { return; }
+	StartSpectatingOnly();
 }

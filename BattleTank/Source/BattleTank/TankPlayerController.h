@@ -33,6 +33,9 @@ protected:
 
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector& AimHitLocation) const;
 
+	UFUNCTION()
+	void OnPossesedDeath();
+
 private:
 	APawn *ControlledTank = NULL;
 
@@ -46,4 +49,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float LineTraceRange = 1000000;
+
+	virtual void SetPawn(APawn * InPawn) override;
 };

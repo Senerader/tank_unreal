@@ -32,5 +32,9 @@ private:
 	APawn *PlayerTank = NULL;
 	FVector PlayerCoordinates;
 
+	virtual void SetPawn(APawn* InPawn) override;
 	UTankAimingComponent* TankAimingComponent = nullptr;
+
+	UFUNCTION()
+	void OnPossesedDeath();
 };

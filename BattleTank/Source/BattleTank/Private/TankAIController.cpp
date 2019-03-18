@@ -4,6 +4,7 @@
 #include "Engine/World.h"
 #include "TankAimingComponent.h"
 #include "Engine/Classes/GameFramework/PlayerController.h"
+#include "Tank.h"
 #include "GameFramework/Actor.h"
 
 void ATankAIController::BeginPlay()
@@ -14,6 +15,26 @@ void ATankAIController::BeginPlay()
 	TankAimingComponent = AITank->FindComponentByClass<UTankAimingComponent>();
 }
 
+void ATankAIController::SetPawn(APawn * InPawn)
+{
+	Super::SetPawn(InPawn);
+
+	if (InPawn)
+	{
+		auto PossesedTank = Cast<ATank>(InPawn);
+		if (!ensure(PossesedTank)){ return; }
+
+		//subscrive our local  method to Tank's death method
+		PossesedTank->OnTankDeath.AddUniqueDynamic(this, &ATankAIController::OnPossesedDeath);
+	}
+}
+
+void ATankAIController::OnPossesedDeath()
+{
+	UE_LOG(LogTemp, Warning, TEXT("AI Tank died"));
+	GetPawn()->DetachFromControllerPendingDestroy();
+}
+
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -21,7 +42,7 @@ void ATankAIController::Tick(float DeltaTime)
 
 	PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
 	TankAimingComponent = AITank->FindComponentByClass<UTankAimingComponent>();
-	if (ensure(PlayerTank && TankAimingComponent))
+	if (PlayerTank && TankAimingComponent)
 	{
 		//move towards player
 		MoveToActor(PlayerTank, AcceptanceRadius); //TODO check radius in cm
@@ -36,3 +57,5 @@ void ATankAIController::Tick(float DeltaTime)
 
 	}
 }
+
+

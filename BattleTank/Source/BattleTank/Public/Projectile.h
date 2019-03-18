@@ -51,4 +51,12 @@ private:
 		FVector NormalImpulse,
 		const FHitResult& Hit
 	);
+
+	void OnTimerHandler();
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float DestroyDelay = 5.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float ProjectileDamage = 20.f;
 };
